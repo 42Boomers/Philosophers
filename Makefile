@@ -1,8 +1,7 @@
 CC 			= 	gcc
 NAME		=	philosophers
-LIB_PATH	=	libft/libft.a
 INCLUDES	=	includes/philosophers.h
-SRCS		=	srcs/main.c
+SRCS		=	srcs/main.c srcs/ft_atoi_ultimate.c
 
 OBJS 		=	$(SRCS:.c=.o)
 
@@ -13,10 +12,8 @@ CFLAGS		=	-Wall -Wextra
 all : $(NAME)
 
 $(NAME): $(OBJS) $(INCLUDES)
-	make -C libft
-	$(CC) ${CFLAGS} $(OBJS) $(LIB_PATH) -o $(NAME)
+	$(CC) ${CFLAGS} $(OBJS) -o $(NAME)
 clean:
-	make $@ -C libft
 	rm -f $(OBJS)
 
 .c.o:
