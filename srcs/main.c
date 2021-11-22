@@ -1,8 +1,18 @@
 #include "../includes/philosophers.h"
 
+int	init_philo(t_list **list)
+{
+	t_philo		*philo;
+
+	philo = malloc(sizeof(t_philo));
+	if (!philo)
+		return (NULL);
+	ft_lstadd_back(list, ft_lstnew(philo));
+}
+
 int	check_args(int ac, t_args *args)
 {
-	if (!args->members || !args->time_die || !args->time_eat
+	if (!args->nb || *(args->nb) < 1 || !args->time_die || !args->time_eat
 		|| !args->time_sleep || (ac >= 6 && !args->must_eat))
 	{
 		printf("all args must be valid numbers\n");
@@ -20,7 +30,7 @@ t_args	*args(int ac, char **av)
 		printf("4 args minimum\n");
 		return (0);
 	}
-	args.members = ft_atoi_ultimate(av[1]);
+	args.nb = ft_atoi_ultimate(av[1]);
 	args.time_die = ft_atoi_ultimate(av[2]);
 	args.time_eat = ft_atoi_ultimate(av[3]);
 	args.time_sleep = ft_atoi_ultimate(av[4]);
