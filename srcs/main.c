@@ -6,44 +6,58 @@ int	init_philo(t_list **list)
 
 	philo = malloc(sizeof(t_philo));
 	if (!philo)
-		return (NULL);
-	ft_lstadd_back(list, ft_lstnew(philo));
-}
-
-int	check_args(int ac, t_args *args)
-{
-	if (!args->nb || *(args->nb) < 1 || !args->time_die || !args->time_eat
-		|| !args->time_sleep || (ac >= 6 && !args->must_eat))
-	{
-		printf("all args must be valid numbers\n");
 		return (1);
-	}
+	philo->action = WAIT;
+	ft_lstadd_back(list, ft_lstnew(philo));
 	return (0);
 }
 
-t_args	*args(int ac, char **av)
-{	
-	t_args args;
+void	*test(void	*arg)
+{
+	struct timeval	tv;
+	struct timezone tz;
 
-	if (ac < 5)
+	gettimeofday(&tv, &tz);
+	printf("Timestamp %ld\n", tv.tv_sec);
+	printf("HELLO THREAD\n");
+	printf("WHO ARE YOU ?\n");
+	(void)arg;
+	return (NULL);
+}
+
+int	create_thread()
+{
+	pthread_t 		thread;
+	pthread_attr_t	*params;
+	void			*arg;
+  	void			*ret;
+	
+	params = NULL;
+	arg = NULL;
+	if (pthread_create(&thread, params, test, arg) != 0)
 	{
-		printf("4 args minimum\n");
-		return (0);
+		printf("Unable to create thread.\n");
+		return (1);
 	}
-	args.nb = ft_atoi_ultimate(av[1]);
-	args.time_die = ft_atoi_ultimate(av[2]);
-	args.time_eat = ft_atoi_ultimate(av[3]);
-	args.time_sleep = ft_atoi_ultimate(av[4]);
-	if (ac >= 6)
-		args.must_eat = ft_atoi_ultimate(av[5]);
-	else
-		args.must_eat = 0;
-	if (check_args(ac, &args) != 0)
-		return (0);
-	return (&args);
+	//pthread_detach(thread);
+	if (pthread_join(thread, &ret) != 0)
+	{
+		printf("Unable to join thread.\n");
+		return (3);
+	}
+	printf("thread exited with '%s'\n", (char *)ret);
+	return (0);
 }
 
 int	main(int ac, char **av)
 {
+	(void)ac;
+	(void)av;
+	/*
+	if (args(ac, av) != 0)
+		return (1);
+	*/
+	create_thread();
+	printf("END\n");
 	return (0);
 }
