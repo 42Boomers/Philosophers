@@ -12,55 +12,38 @@
 
 #include "../includes/philosophers.h"
 
-static int	*ft_atoi_ultimate2(const char *str, unsigned int nb,
-	int neg, int *ret)
+int	ft_atoi_ultimate2(const char *str)
 {
-	int		swap;
-	int		i;
+	int				i;
+	unsigned int	nb;
 
+	nb = 0;
 	i = 0;
 	if (!(*str >= '0' && *str <= '9'))
 		return (0);
 	while (*str >= '0' && *str <= '9')
 	{
-		nb = nb * 10 + (*str - 48);
-		if (i++ > 10 || (neg == -1 && nb > 2147483648)
-			|| (neg == 1 && nb > 2147483647))
-			return (0);
+		nb = nb * 10 + (*str - '0');
+		if (i++ > 10 || nb > 2147483647)
+			return (-1);
 		str++;
 	}
 	while ((*str == '\t') || (*str == '\v') || (*str == '\n')
 		|| (*str == '\r') || (*str == '\f') || (*str == ' '))
 		str++;
 	if (*str != 0)
-		return (0);
-	swap = ((int)nb * neg);
-	ret = &swap;
-	return (ret);
+		return (-1);
+	return (nb);
 }
 
-/** Atoi without allowing letter, and check INT range. It return a pointer
- * @return int* or NULL
- * @param str should be in int range
- */
-int	*ft_atoi_ultimate(const char *str)
+int	ft_atoi_ultimate(const char *str)
 {
-	unsigned int	nb;
-	int				neg;
-	int				*ret;
-
-	nb = 0;
-	neg = 1;
-	ret = 0;
 	while ((*str == '\t') || (*str == '\v') || (*str == '\n')
 		|| (*str == '\r') || (*str == '\f') || (*str == ' '))
 		str++;
 	if (*str == '-')
-	{
-		neg = -1;
-		str++;
-	}
+		return (-1);
 	else if (*str == '+')
 		str++;
-	return (ft_atoi_ultimate2(str, nb, neg, ret));
+	return (ft_atoi_ultimate2(str));
 }

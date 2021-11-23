@@ -1,63 +1,101 @@
 #include "../includes/philosophers.h"
 
-int	init_philo(t_list **list)
-{
-	t_philo		*philo;
+static pthread_mutex_t  mutex = PTHREAD_MUTEX_INITIALIZER;
 
-	philo = malloc(sizeof(t_philo));
-	if (!philo)
-		return (1);
-	philo->action = WAIT;
-	ft_lstadd_back(list, ft_lstnew(philo));
-	return (0);
-}
-
-void	*test(void	*arg)
+long	get_time(t_args *args)
 {
 	struct timeval	tv;
 	struct timezone tz;
 
 	gettimeofday(&tv, &tz);
-	printf("Timestamp %ld\n", tv.tv_sec);
-	printf("HELLO THREAD\n");
-	printf("WHO ARE YOU ?\n");
-	(void)arg;
+	return (tv.tv_usec - args->start_time);
+}
+
+void	*eat(t_philo *philo)
+{
+	//pthread_mutex_lock(&mutex);
+	philo->action = EAT;
+	printf("%ld Philosopher %d is eating\n", get_time(philo->args), philo->id);
+	usleep(500000);
+	//test(philo);
+	//pthread_mutex_unlock(&mutex);
+	pthread_exit(0);
 	return (NULL);
 }
 
-int	create_thread()
+void	*start(void *v)
 {
-	pthread_t 		thread;
+	t_philo			*philo;
+
+	philo = (t_philo *)v;
+	printf("%ld New Philosopher %d\n", get_time(philo->args), philo->id);
+	usleep(500000);
+	//pthread_mutex_unlock(&mutex);
+	eat(philo);
+	return (NULL);
+}
+
+int	create_thread(t_philo *philo)
+{
 	pthread_attr_t	*params;
 	void			*arg;
   	void			*ret;
 	
 	params = NULL;
-	arg = NULL;
-	if (pthread_create(&thread, params, test, arg) != 0)
+	arg = philo;
+	if (pthread_create(&(philo->thread), params, start, arg) != 0)
 	{
 		printf("Unable to create thread.\n");
 		return (1);
 	}
-	//pthread_detach(thread);
-	if (pthread_join(thread, &ret) != 0)
+	/*if (pthread_mutex_init(PTHREAD_MUTEX_INITIALIZER, NULL) != 0)
+	{
+		printf("Unable to create mutex.\n");
+		return (1);
+	}*/
+	//pthread_detach(philo->thread);
+	/*if (pthread_join(philo->thread, &ret) != 0)
 	{
 		printf("Unable to join thread.\n");
 		return (3);
 	}
-	printf("thread exited with '%s'\n", (char *)ret);
+	printf("thread exited with '%s'\n", (char *)ret);*/
 	return (0);
+}
+
+void	join_thread(void *v)
+{
+	t_philo	*philo;
+	int		id;
+  	void	*ret;
+
+	philo = (t_philo *)((t_list *)v)->content;
+	id = philo->id;
+	if (pthread_join(philo->thread, &ret) != 0)
+	{
+		printf("Unable to join thread.\n");
+		return ;
+	}
+	printf("Philosopher %d died\n", id);
+}
+
+void	join_threads(t_args *args)
+{
+	ft_lstiter(args->members, join_thread);
 }
 
 int	main(int ac, char **av)
 {
+	t_args	*arg;
+	arg = args(ac, av);
+	if (!arg)
+		return (1);
+	init_philo(arg);
+	join_threads(arg);
+	printf("END\n");
+	ft_lstclear(&(arg->members), free);
+	free(arg);
 	(void)ac;
 	(void)av;
-	/*
-	if (args(ac, av) != 0)
-		return (1);
-	*/
-	create_thread();
-	printf("END\n");
 	return (0);
 }
