@@ -11,7 +11,7 @@ t_philo	*get_philo(t_args *args, int id)
 	{
 		if (++i == id)
 		{
-			return ((t_philo *)list->content)
+			return ((t_philo *)list->content);
 		}
 		list = list->next;
 	}

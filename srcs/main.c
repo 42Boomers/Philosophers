@@ -1,11 +1,11 @@
 #include "../includes/philosophers.h"
 
-static pthread_mutex_t  mutex = PTHREAD_MUTEX_INITIALIZER;
+static pthread_mutex_t	g_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 long	get_time(t_args *args)
 {
 	struct timeval	tv;
-	struct timezone tz;
+	struct timezone	tz;
 
 	gettimeofday(&tv, &tz);
 	return (tv.tv_usec - args->start_time);
@@ -13,12 +13,12 @@ long	get_time(t_args *args)
 
 void	*eat(t_philo *philo)
 {
-	//pthread_mutex_lock(&mutex);
+	//pthread_mutex_lock(&g_mutex);
 	philo->action = EAT;
 	printf("%ld Philosopher %d is eating\n", get_time(philo->args), philo->id);
 	usleep(500000);
 	//test(philo);
-	//pthread_mutex_unlock(&mutex);
+	//pthread_mutex_unlock(&g_mutex);
 	pthread_exit(0);
 	return (NULL);
 }
@@ -30,7 +30,7 @@ void	*start(void *v)
 	philo = (t_philo *)v;
 	printf("%ld New Philosopher %d\n", get_time(philo->args), philo->id);
 	usleep(500000);
-	//pthread_mutex_unlock(&mutex);
+	//pthread_mutex_unlock(&g_mutex);
 	eat(philo);
 	return (NULL);
 }
@@ -39,8 +39,8 @@ int	create_thread(t_philo *philo)
 {
 	pthread_attr_t	*params;
 	void			*arg;
-  	void			*ret;
-	
+	void			*ret;
+
 	params = NULL;
 	arg = philo;
 	if (pthread_create(&(philo->thread), params, start, arg) != 0)
@@ -67,7 +67,7 @@ void	join_thread(void *v)
 {
 	t_philo	*philo;
 	int		id;
-  	void	*ret;
+	void	*ret;
 
 	philo = (t_philo *)((t_list *)v)->content;
 	id = philo->id;
@@ -87,6 +87,7 @@ void	join_threads(t_args *args)
 int	main(int ac, char **av)
 {
 	t_args	*arg;
+
 	arg = args(ac, av);
 	if (!arg)
 		return (1);
