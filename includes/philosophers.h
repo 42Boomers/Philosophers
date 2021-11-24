@@ -1,5 +1,5 @@
-#ifndef PHILOSPHER_H
-# define PHILOSPHER_H
+#ifndef PHILOSOPHERS_H
+# define PHILOSOPHERS_H
 
 # include <stdlib.h>
 # include <unistd.h>
@@ -20,7 +20,7 @@ typedef struct s_args
 	t_list	*members;
 	int		time_die;
 	int		time_eat;
-	int 	time_sleep;
+	int		time_sleep;
 	int		must_eat;
 	long	start_time;
 }	t_args;

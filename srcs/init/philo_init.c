@@ -1,4 +1,3 @@
-
 #include "../../includes/philosophers.h"
 
 int	add_philo(t_args *args, int id)
@@ -19,10 +18,9 @@ int	add_philo(t_args *args, int id)
 
 int	init_philo(t_args *args)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	
 	while (args->nb > i)
 		add_philo(args, ++i);
 	return (0);
