@@ -8,6 +8,9 @@
 # include <stdio.h>
 # include <pthread.h>
 
+# define FREE 0
+# define TAKEN 1
+
 typedef struct s_list
 {
 	void			*content;
@@ -40,8 +43,13 @@ typedef struct s_philo
 	int			id;
 	int			fork;
 	t_action	action;
+	int			last_usec;
+	int			last_sec;
 	t_args		*args;
 }	t_philo;
+
+typedef struct timeval t_timeval;
+typedef struct timezone t_timezone;
 
 void				ft_lstadd_front(t_list **alst, t_list *new);
 void				ft_lstadd_back(t_list **alst, t_list *new);

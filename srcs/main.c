@@ -1,39 +1,60 @@
 #include "../includes/philosophers.h"
 
+#define MARGIN_OF_ERROR 10000
+#define LEFTFORK(n) n
+#define RIGHTFORK(n, max) (n + 1) % max
+
 static pthread_mutex_t	g_mutex = PTHREAD_MUTEX_INITIALIZER;
 
-long	get_time(t_args *args)
+void	*start(t_philo *philo)
 {
-	struct timeval	tv;
-	struct timezone	tz;
+	int			waiting;
+	size_t		i;
+	t_timeval	tv;
+	t_timezone	tz;
 
-	gettimeofday(&tv, &tz);
-	return (tv.tv_usec - args->start_time);
-}
-
-void	*eat(t_philo *philo)
-{
-	//pthread_mutex_lock(&g_mutex);
-	philo->action = EAT;
-	printf("%ld Philosopher %d is eating\n", get_time(philo->args), philo->id);
-	usleep(500000);
-	//test(philo);
-	//pthread_mutex_unlock(&g_mutex);
-	pthread_exit(0);
+	philo->last_usec = tv.tv_usec;
+	philo->last_sec = tv.tv_sec;
+	while (1)
+	{
+		waiting = 1;
+		printf("[%d] THINKING\n", philo->id);
+		while (waiting)
+		{
+			gettimeofday(&tv, &tz);
+			if (tv.tv_sec - philo->last_usec >= 4 && philo->last_sec - MARGIN_OF_ERROR > philo->last_usec)
+			{
+				printf("[%d] DIE AFTER [%lds%ldu]\n", philo->id, tv.tv_sec - philo->last_sec, tv.tv_usec - philo->last_usec);
+				exit(0);
+			}
+			// else
+				// printf("last time %ld tv_usec %ld difference %ldu%ld\n", last_second, tv.tv_sec, tv.tv_sec - last_second, tv.tv_usec - last_usecond);
+			pthread_mutex_lock(&g_mutex);
+			/*if (ISLEFT_FREE(philo->id) && ISRIGHT_FREE(philo->id))
+			{
+				//forks[LEFTFORK(n)] = TAKEN;
+				//forks[RIGHTFORK(n)] = TAKEN;
+				printf("[%d] TAKE FORK %d and %d\n", philo->id, LEFTFORK(philo->id), RIGHTFORK(philo->id));
+				waiting = 0;
+			}*/
+			pthread_mutex_unlock(&g_mutex);
+		}
+		printf("\033[0;36m[%d] EATING\n\033[0m", philo->id);
+		usleep(2000000);
+		pthread_mutex_lock(&g_mutex);
+		printf("[%d] REALEASE FORKS %d and %d\n", philo->id, LEFTFORK(philo->id), RIGHTFORK(philo->id, philo->args->nb));
+		//forks[LEFTFORK(n)] = FREE;
+		//forks[RIGHTFORK(n)] = FREE;
+		pthread_mutex_unlock(&g_mutex);
+		printf("[%d] SLEEPING\n", philo->id);
+		usleep(2000000);
+		gettimeofday(&tv, &tz);
+		philo->last_sec = tv.tv_sec;
+		philo->last_usec = tv.tv_usec;
+	}
 	return (NULL);
 }
 
-void	*start(void *v)
-{
-	t_philo			*philo;
-
-	philo = (t_philo *)v;
-	printf("%ld New Philosopher %d\n", get_time(philo->args), philo->id);
-	usleep(500000);
-	//pthread_mutex_unlock(&g_mutex);
-	eat(philo);
-	return (NULL);
-}
 
 int	create_thread(t_philo *philo)
 {
@@ -76,7 +97,7 @@ void	join_thread(void *v)
 		printf("Unable to join thread.\n");
 		return ;
 	}
-	printf("Philosopher %d died\n", id);
+	printf("Philosopher %d died with exit %d\n", id, (int) ret);
 }
 
 void	join_threads(t_args *args)

@@ -2,6 +2,8 @@
 
 int	add_philo(t_args *args, int id)
 {
+	t_timeval	tv;
+	t_timezone	tz;
 	t_philo		*philo;
 
 	philo = malloc(sizeof(t_philo));
@@ -11,6 +13,9 @@ int	add_philo(t_args *args, int id)
 	philo->fork = 1;
 	philo->id = id;
 	philo->args = args;
+	gettimeofday(&tv, &tz);
+	philo->last_usec = tv.tv_usec;
+	philo->last_sec = tv.tv_sec;
 	ft_lstadd_back(&(args->members), ft_lstnew(philo));
 	create_thread(philo);
 	return (0);
