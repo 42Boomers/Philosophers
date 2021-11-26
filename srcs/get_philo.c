@@ -18,6 +18,15 @@ t_philo	*get_philo(t_args *args, int id)
 	return (NULL);
 }
 
+t_philo	*right_fork(t_args *args, t_philo *philo)
+{
+	int	target_id;
+	
+	target_id = (philo->id % args->nb) + 1;
+	return (get_philo(args, target_id));
+}
+
+/*
 int	get_fork(t_args *args, t_philo *philo)
 {
 	int		i;
@@ -46,3 +55,4 @@ void	release_fork(t_philo *philo)
 {
 	return (NULL);
 }
+*/
