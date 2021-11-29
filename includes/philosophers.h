@@ -27,27 +27,32 @@ typedef struct s_args
 	int					must_eat;
 	int					*forks;
 	pthread_mutex_t		*mutexs;
+	pthread_mutex_t		mutex_print;
 }	t_args;
 
 typedef enum s_action
 {
 	ALIVE,
+	EAT,
+	SLEEP,
+	THINK,
+	TAKE_FORK,
 	DEAD_ALONE,
 	END
 }	t_action;
 
 typedef struct s_philo
 {
-	pthread_t	thread;
-	int			id;
-	int			last_msec;
-	t_action	action;
-	int			times_eat;
-	t_args		*args;
+	pthread_t		thread;
+	int				id;
+	unsigned long	last_msec;
+	t_action		action;
+	int				times_eat;
+	t_args			*args;
 }	t_philo;
 
-typedef struct timeval t_timeval;
-typedef struct timezone t_timezone;
+typedef struct timeval	t_timeval;
+typedef struct timezone	t_timezone;
 
 void				ft_lstadd_front(t_list **alst, t_list *new);
 void				ft_lstadd_back(t_list **alst, t_list *new);
@@ -70,11 +75,12 @@ int					get_forks(t_philo *philo);
 void				*start(void *arg);
 void				join_threads(t_args *args);
 int					create_thread(t_philo *philo);
-unsigned long		timestamp();
+unsigned long		timestamp(void);
 void				destroy_all_mutex(t_args *args);
 void				unlock_all_mutex(t_args *args);
 void				lock_all_mutex(t_args *args);
 void				iter_mutex(t_args *args, int f(pthread_mutex_t *mutex));
-
+void				set_action(t_philo *philo, t_action action);
+int					w8_for(t_args *args);
 
 #endif

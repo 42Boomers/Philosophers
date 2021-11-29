@@ -2,13 +2,13 @@
 
 static int	check_dead(t_args *args)
 {
-	t_list *iter;
-	t_philo *philo;
+	t_list	*iter;
+	t_philo	*philo;
 
 	iter = args->members;
 	while (iter)
 	{
-		philo = (t_philo*)iter->content;
+		philo = (t_philo *)iter->content;
 		if (philo->action == DEAD_ALONE)
 			return (-2);
 		if (philo->action == END)

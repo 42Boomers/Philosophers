@@ -33,29 +33,17 @@ int	create_thread(t_philo *philo)
 	return (0);
 }
 
-
-void	iter_mutex(t_args *args, int f(pthread_mutex_t *mutex))
+void	deteach_all(t_args *args, t_philo *exept)
 {
-	int	i;
+	t_list	*iter;
+	t_philo	*philo;
 
-	i = 0;
-	while (i < args->nb)
+	iter = args->members;
+	while (iter)
 	{
-		f(&args->mutexs[i++]);
+		philo = (t_philo *) iter->content;
+		if (exept->id != philo->id)
+			pthread_detach(philo->thread);
+		iter = iter->next;
 	}
-}
-
-void	destroy_all_mutex(t_args *args)
-{
-	iter_mutex(args, pthread_mutex_destroy);
-}
-
-void	unlock_all_mutex(t_args *args)
-{
-	iter_mutex(args, pthread_mutex_unlock);
-}
-
-void	lock_all_mutex(t_args *args)
-{
-	iter_mutex(args, pthread_mutex_lock);
 }
