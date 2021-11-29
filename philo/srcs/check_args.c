@@ -1,6 +1,6 @@
 #include "../includes/philosophers.h"
 
-static t_args	*args_2(int ac, char **av, t_args *args)
+static t_args	*args_2(t_args *args)
 {
 	int			i;
 
@@ -49,7 +49,7 @@ static t_args	*args_ints(int ac, char **av, t_args *args)
 		free(args);
 		return (0);
 	}
-	return (args_2(ac, av, args));
+	return (args_2(args));
 }
 
 t_args	*args(int ac, char **av)

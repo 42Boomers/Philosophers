@@ -1,22 +1,23 @@
 #include "../includes/philosophers.h"
 
-static void	loop2(t_philo *philo, unsigned long *msec)
+static int	loop2(t_philo *philo, unsigned long *msec)
 {
-	philo->last_msec = msec;
+	philo->last_msec = *msec;
 	philo->times_eat++;
 	if (philo->args->must_eat != -1
 		&& philo->times_eat >= philo->args->must_eat)
 	{
 		philo->action = END;
-		return (0);
+		return (1);
 	}
 	set_action(philo, SLEEP);
 	usleep(philo->args->time_sleep * 1000);
-	msec = timestamp();
+	*msec = timestamp();
 	set_action(philo, THINK);
+	return (0);
 }
 
-static void	loop(t_philo *philo, unsigned long *msec)
+static int	loop(t_philo *philo, unsigned long *msec)
 {
 	int	waiting;
 
@@ -24,23 +25,24 @@ static void	loop(t_philo *philo, unsigned long *msec)
 	while (waiting)
 	{
 		waiting = get_forks(philo);
-		msec = timestamp();
-		if (msec - philo->last_msec >= (unsigned long) philo->args->time_die)
+		*msec = timestamp();
+		if (*msec - philo->last_msec >= (unsigned long) philo->args->time_die)
 		{
 			set_action(philo, DEAD_ALONE);
-			return (0);
+			return (1);
 		}
 	}
 	set_action(philo, EAT);
 	usleep(philo->args->time_eat * 1000);
 	release_forks(philo);
-	loop2(philo, &msec);
+	return (loop2(philo, msec));
 }
 
 void	*start(void *arg)
 {
 	t_philo			*philo;
 	unsigned long	msec;
+	int				ret;
 
 	philo = (t_philo *) arg;
 	msec = timestamp();
@@ -55,9 +57,8 @@ void	*start(void *arg)
 		return (0);
 	}
 	philo->last_msec = msec;
-	while (1)
-	{
-		loop(philo, &msec);
-	}
+	ret = loop(philo, &msec);
+	while (!ret)
+		ret = loop(philo, &msec);
 	return (0);
 }
