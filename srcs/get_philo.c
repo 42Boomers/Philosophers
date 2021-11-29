@@ -18,12 +18,33 @@ t_philo	*get_philo(t_args *args, int id)
 	return (NULL);
 }
 
-t_philo	*right_fork(t_args *args, t_philo *philo)
+int	get_forks(t_philo *philo)
 {
-	int	target_id;
-	
-	target_id = (philo->id % args->nb) + 1;
-	return (get_philo(args, target_id));
+	t_args	*args;
+	int		target_id;
+
+	args = philo->args;
+	target_id = (philo->id % args->nb);
+	if (args->forks[target_id] == TAKEN || args->forks[philo->id - 1] == TAKEN)
+		return (1);
+	printf("[%ld] %d has taken fork %d\n", timestamp(), philo->id, target_id + 1);
+	args->forks[philo->id - 1] = TAKEN;
+	args->forks[target_id] = TAKEN;
+	return (0);
+}
+
+void	release_forks(t_philo *philo)
+{
+	t_args	*args;
+	int		target_id;
+
+	args = philo->args;
+	target_id = (philo->id % args->nb);
+	if (args->forks[target_id] == FREE || args->forks[philo->id - 1] == FREE)
+		return ;
+	//printf("[%ld] %d REALEASE FORKS %d and %d\n", timestamp(), philo->id, philo->id, target_id + 1);
+	args->forks[philo->id - 1] = FREE;
+	args->forks[target_id] = FREE;
 }
 
 /*
@@ -49,10 +70,4 @@ int	get_fork(t_args *args, t_philo *philo)
 	temp->fork = 0;
 	philo->fork = 1;
 	return (0);
-}
-
-void	release_fork(t_philo *philo)
-{
-	return (NULL);
-}
-*/
+}*/

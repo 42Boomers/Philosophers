@@ -19,13 +19,15 @@ typedef struct s_list
 
 typedef struct s_args
 {
-	int		nb;
-	t_list	*members;
-	int		time_die;
-	int		time_eat;
-	int		time_sleep;
-	int		must_eat;
-	long	start_time;
+	int					nb;
+	t_list				*members;
+	int					time_die;
+	int					time_eat;
+	int					time_sleep;
+	int					must_eat;
+	long				start_time;
+	int					*forks;
+	pthread_mutex_t		*mutexs;
 }	t_args;
 
 typedef enum s_action
@@ -41,10 +43,10 @@ typedef struct s_philo
 {
 	pthread_t	thread;
 	int			id;
-	int			fork;
 	t_action	action;
 	int			last_usec;
 	int			last_sec;
+	int			times_eat;
 	t_args		*args;
 }	t_philo;
 
@@ -67,5 +69,12 @@ int					ft_atoi_ultimate(const char *str);
 t_args				*args(int ac, char **av);
 int					init_philo(t_args *args);
 t_philo				*get_philo(t_args *args, int id);
+void				release_forks(t_philo *philo);
+int					get_forks(t_philo *philo);
+void				*start(void *arg);
+void				join_threads(t_args *args);
+int					create_thread(t_philo *philo);
+unsigned long		timestamp();
+
 
 #endif

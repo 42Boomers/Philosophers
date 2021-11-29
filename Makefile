@@ -1,7 +1,14 @@
 CC 			= 	gcc
 NAME		=	philosophers
 INCLUDES	=	includes/philosophers.h
-SRCS		=	srcs/main.c srcs/check_args.c srcs/ft_atoi_ultimate.c $(wildcard srcs/*/*.c)
+SRCS		=	srcs/main.c \
+				srcs/action.c \
+				srcs/threads.c \
+				srcs/check_args.c \
+				srcs/ft_atoi_ultimate.c \
+				srcs/get_philo.c \
+				srcs/utils.c \
+				$(wildcard srcs/*/*.c)
 
 OBJS 		=	$(SRCS:.c=.o)
 

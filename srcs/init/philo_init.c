@@ -10,12 +10,12 @@ int	add_philo(t_args *args, int id)
 	if (!philo)
 		return (1);
 	philo->action = WAIT;
-	philo->fork = 1;
 	philo->id = id;
 	philo->args = args;
 	gettimeofday(&tv, &tz);
 	philo->last_usec = tv.tv_usec;
 	philo->last_sec = tv.tv_sec;
+	philo->times_eat = 0;
 	ft_lstadd_back(&(args->members), ft_lstnew(philo));
 	create_thread(philo);
 	return (0);

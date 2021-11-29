@@ -13,8 +13,8 @@ int	check_args(int ac, t_args *args)
 
 t_args	*args_ints(int ac, char **av, t_args *args)
 {	
-	struct timeval	tv;
-	struct timezone	tz;
+	t_timeval	tv;
+	t_timezone	tz;
 
 	gettimeofday(&tv, &tz);
 	args->start_time = tv.tv_usec;
@@ -25,12 +25,18 @@ t_args	*args_ints(int ac, char **av, t_args *args)
 	if (ac >= 6)
 		args->must_eat = ft_atoi_ultimate(av[5]);
 	else
-		args->must_eat = NULL;
+		args->must_eat = -1;
 	if (check_args(ac, args) != 0)
 	{
 		free(args);
 		return (0);
 	}
+	args->forks = malloc(sizeof(int) * args->nb);
+	if (!args->forks)
+		return (0);
+	args->mutexs = malloc(sizeof(pthread_mutex_t) * args->nb);
+	if (!args->mutexs)
+		return (0);
 	args->members = NULL;
 	return (args);
 }
@@ -38,8 +44,6 @@ t_args	*args_ints(int ac, char **av, t_args *args)
 t_args	*args(int ac, char **av)
 {	
 	t_args			*args;
-	struct timeval	tv;
-	struct timezone	tz;
 
 	args = malloc(sizeof(t_args));
 	if (!args)
@@ -53,5 +57,5 @@ t_args	*args(int ac, char **av)
 		free(args);
 		return (0);
 	}
-	return (args_ints(av, ac, args));
+	return (args_ints(ac, av, args));
 }
