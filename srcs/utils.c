@@ -1,4 +1,5 @@
 #include "../includes/philosophers.h"
+#include <limits.h>
 
 unsigned long	timestamp()
 {
@@ -6,7 +7,10 @@ unsigned long	timestamp()
 	t_timezone		tz;
 	unsigned long	ts;
 
-	gettimeofday(&tv, &tz);
+	if (gettimeofday(&tv, &tz))
+	{
+		return (0);
+	}
 	ts = tv.tv_usec / 1000;
 	ts += tv.tv_sec * 1000;
 	return (ts);

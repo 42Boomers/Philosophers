@@ -12,12 +12,9 @@ int	check_args(int ac, t_args *args)
 }
 
 t_args	*args_ints(int ac, char **av, t_args *args)
-{	
-	t_timeval	tv;
-	t_timezone	tz;
+{
+	int			i;
 
-	gettimeofday(&tv, &tz);
-	args->start_time = tv.tv_usec;
 	args->nb = ft_atoi_ultimate(av[1]);
 	args->time_die = ft_atoi_ultimate(av[2]);
 	args->time_eat = ft_atoi_ultimate(av[3]);
@@ -33,10 +30,21 @@ t_args	*args_ints(int ac, char **av, t_args *args)
 	}
 	args->forks = malloc(sizeof(int) * args->nb);
 	if (!args->forks)
+	{
+		printf("Can't malloc args->forks[]\n");
 		return (0);
+	}
 	args->mutexs = malloc(sizeof(pthread_mutex_t) * args->nb);
 	if (!args->mutexs)
+	{
+		printf("Can't malloc pthread_mutex_t[]\n");
 		return (0);
+	}
+	i = 0;
+	while (i < args->nb)
+	{
+		pthread_mutex_init(&args->mutexs[i++], NULL);
+	}
 	args->members = NULL;
 	return (args);
 }

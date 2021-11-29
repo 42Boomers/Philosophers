@@ -25,27 +25,23 @@ typedef struct s_args
 	int					time_eat;
 	int					time_sleep;
 	int					must_eat;
-	long				start_time;
 	int					*forks;
 	pthread_mutex_t		*mutexs;
 }	t_args;
 
 typedef enum s_action
 {
-	EAT,
-	SLEEP,
-	THINK,
-	DEAD,
-	WAIT
+	ALIVE,
+	DEAD_ALONE,
+	END
 }	t_action;
 
 typedef struct s_philo
 {
 	pthread_t	thread;
 	int			id;
+	int			last_msec;
 	t_action	action;
-	int			last_usec;
-	int			last_sec;
 	int			times_eat;
 	t_args		*args;
 }	t_philo;
@@ -75,6 +71,10 @@ void				*start(void *arg);
 void				join_threads(t_args *args);
 int					create_thread(t_philo *philo);
 unsigned long		timestamp();
+void				destroy_all_mutex(t_args *args);
+void				unlock_all_mutex(t_args *args);
+void				lock_all_mutex(t_args *args);
+void				iter_mutex(t_args *args, int f(pthread_mutex_t *mutex));
 
 
 #endif

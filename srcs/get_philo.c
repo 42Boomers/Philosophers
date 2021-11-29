@@ -17,14 +17,27 @@ t_philo	*get_philo(t_args *args, int id)
 	}
 	return (NULL);
 }
+/*
+void	unlock(t_philo *philo)
+{
+	t_args	*args;
+	int		target_id;
 
+	args = philo->args;
+	target_id = philo->id % args->nb;
+	pthread_mutex_lock(&args->mutexs[philo->id - 1]);
+	pthread_mutex_lock(&args->mutexs[target_id]);
+}
+*/
 int	get_forks(t_philo *philo)
 {
 	t_args	*args;
 	int		target_id;
 
 	args = philo->args;
-	target_id = (philo->id % args->nb);
+	target_id = philo->id % args->nb;
+	pthread_mutex_lock(&args->mutexs[philo->id - 1]);
+	pthread_mutex_lock(&args->mutexs[target_id]);
 	if (args->forks[target_id] == TAKEN || args->forks[philo->id - 1] == TAKEN)
 		return (1);
 	printf("[%ld] %d has taken fork %d\n", timestamp(), philo->id, target_id + 1);
@@ -39,12 +52,14 @@ void	release_forks(t_philo *philo)
 	int		target_id;
 
 	args = philo->args;
-	target_id = (philo->id % args->nb);
+	target_id = philo->id % args->nb;
 	if (args->forks[target_id] == FREE || args->forks[philo->id - 1] == FREE)
 		return ;
 	//printf("[%ld] %d REALEASE FORKS %d and %d\n", timestamp(), philo->id, philo->id, target_id + 1);
 	args->forks[philo->id - 1] = FREE;
 	args->forks[target_id] = FREE;
+	pthread_mutex_unlock(&args->mutexs[philo->id - 1]);
+	pthread_mutex_unlock(&args->mutexs[target_id]);
 }
 
 /*

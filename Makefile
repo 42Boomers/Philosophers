@@ -4,6 +4,7 @@ INCLUDES	=	includes/philosophers.h
 SRCS		=	srcs/main.c \
 				srcs/action.c \
 				srcs/threads.c \
+				srcs/thread_dead.c \
 				srcs/check_args.c \
 				srcs/ft_atoi_ultimate.c \
 				srcs/get_philo.c \
@@ -14,7 +15,7 @@ OBJS 		=	$(SRCS:.c=.o)
 
 #CFLAGS		=	-Wall -Wextra -g3 -fsanitize=address
 #CFLAGS		=	-Wall -Wextra -Werror
-CFLAGS		=	-Wall -Wextra -g3 -fsanitize=address
+CFLAGS		=	-Wall -Wextra #-g3 -fsanitize=address
 
 all : $(NAME)
 
