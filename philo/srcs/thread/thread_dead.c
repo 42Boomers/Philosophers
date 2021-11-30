@@ -6,7 +6,7 @@
 /*   By: tglory <tglory@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 10:17:09 by tglory            #+#    #+#             */
-/*   Updated: 2021/11/30 19:14:37 by tglory           ###   ########lyon.fr   */
+/*   Updated: 2021/11/30 20:10:57 by tglory           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,21 @@ static int	check_dead(t_args *args)
 {
 	t_list	*iter;
 	t_philo	*philo;
+	long	msec;
 
 	iter = args->members;
 	while (iter)
 	{
 		philo = (t_philo *)iter->content;
-		if (philo->action == DEAD_ALONE)
+		msec = timestamp();
+		if (philo->last_msec != 0
+			&& msec - philo->last_msec >= (long) philo->args->time_die)
 		{
-			printf("YES\n");
+			set_action_d(philo);
 			return (-2);
 		}
+		if (philo->action == DEAD_ALONE)
+			return (-2);
 		if (philo->action == END)
 			return (-1);
 		iter = iter->next;
@@ -40,7 +45,7 @@ int	w8_for(t_args *args)
 	ret = check_dead(args);
 	while (!ret)
 	{
-		//ft_sleep(1000);
+		ft_sleep(1000);
 		ret = check_dead(args);
 	}
 	return (ret);

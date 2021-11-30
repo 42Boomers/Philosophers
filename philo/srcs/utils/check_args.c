@@ -6,7 +6,7 @@
 /*   By: tglory <tglory@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 10:16:43 by tglory            #+#    #+#             */
-/*   Updated: 2021/11/30 17:11:33 by tglory           ###   ########lyon.fr   */
+/*   Updated: 2021/11/30 19:43:55 by tglory           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,6 @@ static t_args	*args_2(t_args *args)
 {
 	int			i;
 
-	args->forks = malloc(sizeof(int) * args->nb);
-	if (!args->forks)
-	{
-		printf("Can't malloc args->forks[]\n");
-		return (0);
-	}
 	args->mutexs = malloc(sizeof(pthread_mutex_t) * args->nb);
 	if (!args->mutexs)
 	{
@@ -37,8 +31,8 @@ static t_args	*args_2(t_args *args)
 
 static int	check_args(int ac, t_args *args)
 {
-	if (args->nb < 1 || args->time_die < 0 || args->time_eat < 0
-		|| args->time_sleep < 0 || (ac >= 6 && args->must_eat < 0))
+	if (args->nb < 1 || args->time_die <= 0 || args->time_eat <= 0
+		|| args->time_sleep <= 0 || (ac >= 6 && args->must_eat <= 0))
 	{
 		printf("All args must be valid numbers\n");
 		return (1);

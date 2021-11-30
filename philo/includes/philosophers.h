@@ -6,7 +6,7 @@
 /*   By: tglory <tglory@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 13:02:39 by tglory            #+#    #+#             */
-/*   Updated: 2021/11/30 19:10:24 by tglory           ###   ########lyon.fr   */
+/*   Updated: 2021/11/30 19:25:07 by tglory           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,6 @@
 # include <string.h>
 # include <stdio.h>
 # include <pthread.h>
-
-//# define FREE 0
-//# define TAKEN 1
 
 typedef struct s_list
 {
@@ -38,10 +35,8 @@ typedef struct s_args
 	int					time_sleep;
 	long				start_time;
 	int					must_eat;
-	int					*forks;
 	pthread_mutex_t		*mutexs;
 	pthread_mutex_t		mutex_print;
-	pthread_mutex_t		mutex_end;
 }	t_args;
 
 typedef enum s_action
@@ -59,7 +54,7 @@ typedef struct s_philo
 {
 	pthread_t		thread;
 	int				id;
-	long	last_msec;
+	long			last_msec;
 	t_action		action;
 	int				times_eat;
 	t_args			*args;

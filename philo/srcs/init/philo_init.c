@@ -6,7 +6,7 @@
 /*   By: tglory <tglory@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 10:17:22 by tglory            #+#    #+#             */
-/*   Updated: 2021/11/30 19:11:30 by tglory           ###   ########lyon.fr   */
+/*   Updated: 2021/11/30 19:28:44 by tglory           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,13 @@ int	add_philo(t_args *args, int id)
 
 int	init_philo(t_args *args)
 {
-	int				i;
+	int	i;
 
-	i = 0;
+	i = 1;
 	args->start_time = timestamp();
-	while (args->nb > i)
+	while (args->nb >= i)
 	{
-		add_philo(args, ++i);
+		add_philo(args, i++);
 	}
 	return (0);
 }

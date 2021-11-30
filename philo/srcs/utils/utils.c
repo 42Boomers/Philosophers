@@ -6,7 +6,7 @@
 /*   By: tglory <tglory@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 10:17:17 by tglory            #+#    #+#             */
-/*   Updated: 2021/11/30 17:34:43 by tglory           ###   ########lyon.fr   */
+/*   Updated: 2021/11/30 19:44:10 by tglory           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ void	set_action_ts_str(t_philo *philo, t_action action, long ts,
 {
 	pthread_mutex_lock(&philo->args->mutex_print);
 	printf("%ld %d %s\n", ts - philo->args->start_time, philo->id, action_str);
-	pthread_mutex_unlock(&philo->args->mutex_print);
+	if (action != DEAD_ALONE)
+		pthread_mutex_unlock(&philo->args->mutex_print);
 	philo->action = action;
 }
 
@@ -46,9 +47,3 @@ void	ft_sleep(int time_micro)
 		ts = timestamp();
 	}
 }
-/*
-void	ft_sleep(int time_micro)
-{
-	usleep(time_micro);
-}
-*/
