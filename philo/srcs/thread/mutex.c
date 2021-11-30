@@ -6,7 +6,7 @@
 /*   By: tglory <tglory@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 10:17:05 by tglory            #+#    #+#             */
-/*   Updated: 2021/11/30 10:19:09 by tglory           ###   ########lyon.fr   */
+/*   Updated: 2021/11/30 13:01:28 by tglory           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,7 @@ void	iter_mutex(t_args *args, int f(pthread_mutex_t *mutex))
 
 	i = 0;
 	while (i < args->nb)
-	{
 		f(&args->mutexs[i++]);
-	}
 }
 
 void	destroy_all_mutex(t_args *args)

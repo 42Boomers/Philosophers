@@ -10,6 +10,7 @@ SRCS		=	srcs/main.c \
 				srcs/utils/ft_atoi_ultimate.c \
 				srcs/get_philo.c \
 				srcs/utils/utils.c \
+				srcs/utils/set_action.c \
 				srcs/lst/ft_lstmap.c \
 				srcs/lst/ft_lstiter.c \
 				srcs/lst/ft_lstlast.c \

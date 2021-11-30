@@ -6,7 +6,7 @@
 /*   By: tglory <tglory@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 10:17:22 by tglory            #+#    #+#             */
-/*   Updated: 2021/11/30 10:17:22 by tglory           ###   ########lyon.fr   */
+/*   Updated: 2021/11/30 12:34:43 by tglory           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	add_philo(t_args *args, int id)
 	philo->id = id;
 	philo->args = args;
 	philo->times_eat = 0;
+	philo->last_msec = 0;
 	philo->action = ALIVE;
 	ft_lstadd_back(&(args->members), ft_lstnew(philo));
 	create_thread(philo);
@@ -30,10 +31,13 @@ int	add_philo(t_args *args, int id)
 
 int	init_philo(t_args *args)
 {
-	int	i;
+	int				i;
 
 	i = 0;
 	while (args->nb > i)
+	{
+		//pthread_mutex_lock(&args->mutex_start);
 		add_philo(args, ++i);
+	}
 	return (0);
 }

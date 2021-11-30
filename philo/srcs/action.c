@@ -6,15 +6,14 @@
 /*   By: tglory <tglory@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 10:16:31 by tglory            #+#    #+#             */
-/*   Updated: 2021/11/30 10:16:32 by tglory           ###   ########lyon.fr   */
+/*   Updated: 2021/11/30 14:17:35 by tglory           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers.h"
 
-static int	loop2(t_philo *philo, unsigned long *msec)
+static int	loop2(t_philo *philo)
 {
-	philo->last_msec = *msec;
 	philo->times_eat++;
 	if (philo->args->must_eat != -1
 		&& philo->times_eat >= philo->args->must_eat)
@@ -22,55 +21,54 @@ static int	loop2(t_philo *philo, unsigned long *msec)
 		philo->action = END;
 		return (1);
 	}
-	set_action(philo, SLEEP);
+	set_action_s(philo);
 	usleep(philo->args->time_sleep * 1000);
-	*msec = timestamp();
-	set_action(philo, THINK);
+	set_action_t(philo);
 	return (0);
 }
 
-static int	loop(t_philo *philo, unsigned long *msec)
+static int	loop(t_philo *philo)
 {
-	int	waiting;
+	unsigned long	msec;
 
-	waiting = 1;
-	while (waiting)
+	msec = timestamp();
+	get_forks(philo);
+	if (msec - philo->last_msec > (unsigned long) philo->args->time_die)
 	{
-		waiting = get_forks(philo);
-		*msec = timestamp();
-		if (*msec - philo->last_msec >= (unsigned long) philo->args->time_die)
-		{
-			set_action(philo, DEAD_ALONE);
-			return (1);
-		}
+		printf("DIED %d %ld\n", philo->id, msec - philo->last_msec);
+		set_action_d(philo);
+		return (1);
 	}
-	set_action(philo, EAT);
+	else
+		printf("NOT DIED %d %ld\n", philo->id, msec - philo->last_msec);
+	set_action_e(philo);
+	philo->last_msec = timestamp();
 	usleep(philo->args->time_eat * 1000);
 	release_forks(philo);
-	return (loop2(philo, msec));
+	return (loop2(philo));
 }
 
 void	*start(void *arg)
 {
 	t_philo			*philo;
-	unsigned long	msec;
 	int				ret;
 
 	philo = (t_philo *) arg;
-	msec = timestamp();
-	if (msec == 0)
+	if (philo->args->nb == 1)
+	{
+		set_action_d(philo);
+		return (NULL);
+	}
+	philo->last_msec = timestamp();
+	/*if (philo->last_msec == 0)
 	{
 		printf("Error: unable to get timestamp.\n");
 		return (NULL);
-	}
-	if (philo->args->nb == 1)
-	{
-		set_action(philo, DEAD_ALONE);
-		return (0);
-	}
-	philo->last_msec = msec;
-	ret = loop(philo, &msec);
+	}*/
+	//pthread_mutex_unlock(&philo->args->mutex_start);
+	//printf("START %d %ld\n", philo->id, philo->last_msec);
+	ret = loop(philo);
 	while (!ret)
-		ret = loop(philo, &msec);
-	return (0);
+		ret = loop(philo);
+	return (NULL);
 }

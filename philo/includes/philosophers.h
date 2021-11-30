@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philosophers.h                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tglory <tglory@student.42lyon.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/30 13:02:39 by tglory            #+#    #+#             */
+/*   Updated: 2021/11/30 13:18:20 by tglory           ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
 
@@ -8,8 +20,8 @@
 # include <stdio.h>
 # include <pthread.h>
 
-# define FREE 0
-# define TAKEN 1
+//# define FREE 0
+//# define TAKEN 1
 
 typedef struct s_list
 {
@@ -28,6 +40,7 @@ typedef struct s_args
 	int					*forks;
 	pthread_mutex_t		*mutexs;
 	pthread_mutex_t		mutex_print;
+	pthread_mutex_t		mutex_start;
 }	t_args;
 
 typedef enum s_action
@@ -80,7 +93,13 @@ void				destroy_all_mutex(t_args *args);
 void				unlock_all_mutex(t_args *args);
 void				lock_all_mutex(t_args *args);
 void				iter_mutex(t_args *args, int f(pthread_mutex_t *mutex));
-void				set_action(t_philo *philo, t_action action);
+void				set_action_tf(t_philo *philo);
+void				set_action_d(t_philo *philo);
+void				set_action_s(t_philo *philo);
+void				set_action_t(t_philo *philo);
+void				set_action_e(t_philo *philo);
+void				set_action_ts_str(t_philo *philo, t_action action,
+						unsigned long ts, char *action_str);
 int					w8_for(t_args *args);
 
 #endif

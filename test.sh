@@ -1,5 +1,5 @@
 #!/bin/bash
-make
+make -C philo
 
 echo -e "\nThe only one should die fast:"
 ./philo/philosophers 1 800 200 200
