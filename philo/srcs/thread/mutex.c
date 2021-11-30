@@ -1,39 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_init.c                                       :+:      :+:    :+:   */
+/*   mutex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tglory <tglory@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/30 10:17:22 by tglory            #+#    #+#             */
-/*   Updated: 2021/11/30 10:17:22 by tglory           ###   ########lyon.fr   */
+/*   Created: 2021/11/30 10:17:05 by tglory            #+#    #+#             */
+/*   Updated: 2021/11/30 10:19:09 by tglory           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/philosophers.h"
 
-int	add_philo(t_args *args, int id)
-{
-	t_philo		*philo;
-
-	philo = malloc(sizeof(t_philo));
-	if (!philo)
-		return (1);
-	philo->id = id;
-	philo->args = args;
-	philo->times_eat = 0;
-	philo->action = ALIVE;
-	ft_lstadd_back(&(args->members), ft_lstnew(philo));
-	create_thread(philo);
-	return (0);
-}
-
-int	init_philo(t_args *args)
+void	iter_mutex(t_args *args, int f(pthread_mutex_t *mutex))
 {
 	int	i;
 
 	i = 0;
-	while (args->nb > i)
-		add_philo(args, ++i);
-	return (0);
+	while (i < args->nb)
+	{
+		f(&args->mutexs[i++]);
+	}
+}
+
+void	destroy_all_mutex(t_args *args)
+{
+	iter_mutex(args, pthread_mutex_destroy);
+}
+
+void	unlock_all_mutex(t_args *args)
+{
+	iter_mutex(args, pthread_mutex_unlock);
+}
+
+void	lock_all_mutex(t_args *args)
+{
+	iter_mutex(args, pthread_mutex_lock);
 }

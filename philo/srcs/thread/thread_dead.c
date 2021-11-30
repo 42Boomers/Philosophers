@@ -1,39 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_init.c                                       :+:      :+:    :+:   */
+/*   thread_dead.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tglory <tglory@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/30 10:17:22 by tglory            #+#    #+#             */
-/*   Updated: 2021/11/30 10:17:22 by tglory           ###   ########lyon.fr   */
+/*   Created: 2021/11/30 10:17:09 by tglory            #+#    #+#             */
+/*   Updated: 2021/11/30 10:19:16 by tglory           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/philosophers.h"
 
-int	add_philo(t_args *args, int id)
+static int	check_dead(t_args *args)
 {
-	t_philo		*philo;
+	t_list	*iter;
+	t_philo	*philo;
 
-	philo = malloc(sizeof(t_philo));
-	if (!philo)
-		return (1);
-	philo->id = id;
-	philo->args = args;
-	philo->times_eat = 0;
-	philo->action = ALIVE;
-	ft_lstadd_back(&(args->members), ft_lstnew(philo));
-	create_thread(philo);
+	iter = args->members;
+	while (iter)
+	{
+		philo = (t_philo *)iter->content;
+		if (philo->action == DEAD_ALONE)
+			return (-2);
+		if (philo->action == END)
+			return (-1);
+		iter = iter->next;
+	}
 	return (0);
 }
 
-int	init_philo(t_args *args)
+int	w8_for(t_args *args)
 {
-	int	i;
+	int	ret;
 
-	i = 0;
-	while (args->nb > i)
-		add_philo(args, ++i);
-	return (0);
+	ret = check_dead(args);
+	while (!ret)
+	{
+		//usleep(4000);
+		ret = check_dead(args);
+	}
+	return (ret);
 }

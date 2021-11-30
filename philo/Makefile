@@ -3,13 +3,13 @@ NAME		=	philosophers
 INCLUDES	=	includes/philosophers.h
 SRCS		=	srcs/main.c \
 				srcs/action.c \
-				srcs/threads.c \
-				srcs/thread_dead.c \
-				srcs/mutex.c \
-				srcs/check_args.c \
-				srcs/ft_atoi_ultimate.c \
+				srcs/thread/threads.c \
+				srcs/thread/thread_dead.c \
+				srcs/thread/mutex.c \
+				srcs/utils/check_args.c \
+				srcs/utils/ft_atoi_ultimate.c \
 				srcs/get_philo.c \
-				srcs/utils.c \
+				srcs/utils/utils.c \
 				srcs/lst/ft_lstmap.c \
 				srcs/lst/ft_lstiter.c \
 				srcs/lst/ft_lstlast.c \
@@ -23,7 +23,6 @@ SRCS		=	srcs/main.c \
 
 OBJS 		=	$(SRCS:.c=.o)
 
-#CFLAGS		=	-Wall -Wextra -g3 -fsanitize=address
 CFLAGS		=	-Wall -Wextra -Werror
 
 all : $(NAME)
