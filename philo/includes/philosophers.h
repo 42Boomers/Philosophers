@@ -6,7 +6,7 @@
 /*   By: tglory <tglory@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 13:02:39 by tglory            #+#    #+#             */
-/*   Updated: 2021/11/30 17:14:08 by tglory           ###   ########lyon.fr   */
+/*   Updated: 2021/11/30 19:10:24 by tglory           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef struct s_args
 	int					*forks;
 	pthread_mutex_t		*mutexs;
 	pthread_mutex_t		mutex_print;
-	pthread_mutex_t		mutex_start;
+	pthread_mutex_t		mutex_end;
 }	t_args;
 
 typedef enum s_action

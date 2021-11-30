@@ -6,7 +6,7 @@
 /*   By: tglory <tglory@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 10:17:22 by tglory            #+#    #+#             */
-/*   Updated: 2021/11/30 17:22:30 by tglory           ###   ########lyon.fr   */
+/*   Updated: 2021/11/30 19:11:30 by tglory           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ int	init_philo(t_args *args)
 	args->start_time = timestamp();
 	while (args->nb > i)
 	{
-		//pthread_mutex_lock(&args->mutex_start);
 		add_philo(args, ++i);
 	}
 	return (0);

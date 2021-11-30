@@ -6,7 +6,7 @@
 /*   By: tglory <tglory@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 10:16:31 by tglory            #+#    #+#             */
-/*   Updated: 2021/11/30 17:36:12 by tglory           ###   ########lyon.fr   */
+/*   Updated: 2021/11/30 19:15:21 by tglory           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,14 @@ static int	loop(t_philo *philo)
 {
 	long	msec;
 
+	pthread_mutex_lock(&philo->args->mutex_print);
+	pthread_mutex_unlock(&philo->args->mutex_print);
 	get_forks(philo);
 	msec = timestamp();
 	if (msec - philo->last_msec >= (long) philo->args->time_die)
 	{
 		set_action_d(philo);
+		pthread_mutex_lock(&philo->args->mutex_print);
 		return (1);
 	}
 	set_action_e(philo);
@@ -59,13 +62,11 @@ void	*start(void *arg)
 		return (NULL);
 	}
 	philo->last_msec = timestamp();
-	/*if (philo->last_msec == 0)
+	if (philo->last_msec == 0)
 	{
 		printf("Error: unable to get timestamp.\n");
 		return (NULL);
-	}*/
-	//pthread_mutex_unlock(&philo->args->mutex_start);
-	//printf("START %d %ld\n", philo->id, philo->last_msec);
+	}
 	ret = loop(philo);
 	while (!ret)
 		ret = loop(philo);
