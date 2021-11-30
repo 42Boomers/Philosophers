@@ -6,11 +6,11 @@
 /*   By: tglory <tglory@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 13:14:59 by tglory            #+#    #+#             */
-/*   Updated: 2021/11/30 14:07:11 by tglory           ###   ########lyon.fr   */
+/*   Updated: 2021/11/30 17:11:33 by tglory           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/philosophers.h"
+#include "philosophers.h"
 
 void	set_action_e(t_philo *philo)
 {

@@ -28,14 +28,14 @@ CFLAGS		=	-Wall -Wextra -Werror
 
 all : $(NAME)
 
-$(NAME): $(OBJS) $(INCLUDES)
+$(NAME): $(OBJS)
 	$(CC) ${CFLAGS} -pthread $(OBJS) -o $(NAME)
 
 clean:
 	rm -f $(OBJS)
 
-.c.o:
-	${CC} ${CFLAGS} -c $< -o $@
+%.o:	%.c $(INCLUDES)
+	${CC} ${CFLAGS} -c $< -o $@ -Iincludes
 
 fclean: clean
 	rm -f $(NAME)

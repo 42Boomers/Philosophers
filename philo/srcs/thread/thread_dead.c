@@ -6,11 +6,11 @@
 /*   By: tglory <tglory@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 10:17:09 by tglory            #+#    #+#             */
-/*   Updated: 2021/11/30 13:22:03 by tglory           ###   ########lyon.fr   */
+/*   Updated: 2021/11/30 17:11:33 by tglory           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/philosophers.h"
+#include "philosophers.h"
 
 static int	check_dead(t_args *args)
 {
@@ -37,7 +37,7 @@ int	w8_for(t_args *args)
 	ret = check_dead(args);
 	while (!ret)
 	{
-		usleep(100 * 1000);
+		ft_sleep(100 * 1000);
 		ret = check_dead(args);
 	}
 	return (ret);

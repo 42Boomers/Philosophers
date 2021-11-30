@@ -6,17 +6,17 @@
 /*   By: tglory <tglory@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 10:17:17 by tglory            #+#    #+#             */
-/*   Updated: 2021/11/30 14:22:53 by tglory           ###   ########lyon.fr   */
+/*   Updated: 2021/11/30 17:34:43 by tglory           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/philosophers.h"
+#include "philosophers.h"
 
-unsigned long	timestamp(void)
+long	timestamp(void)
 {
 	t_timeval		tv;
 	t_timezone		tz;
-	unsigned long	ts;
+	long			ts;
 
 	gettimeofday(&tv, &tz);
 	ts = tv.tv_usec / 1000;
@@ -24,11 +24,31 @@ unsigned long	timestamp(void)
 	return (ts);
 }
 
-void	set_action_ts_str(t_philo *philo, t_action action, unsigned long ts,
+void	set_action_ts_str(t_philo *philo, t_action action, long ts,
 			char *action_str)
 {
 	pthread_mutex_lock(&philo->args->mutex_print);
-	printf("%ld %d %s\n", ts, philo->id, action_str);
+	printf("%ld %d %s\n", ts - philo->args->start_time, philo->id, action_str);
 	pthread_mutex_unlock(&philo->args->mutex_print);
 	philo->action = action;
 }
+
+void	ft_sleep(int time_micro)
+{
+	long	ts;
+	long	want_ts;
+
+	ts = timestamp();
+	want_ts = ts + (time_micro / 1000);
+	while (want_ts > ts)
+	{
+		usleep(200);
+		ts = timestamp();
+	}
+}
+/*
+void	ft_sleep(int time_micro)
+{
+	usleep(time_micro);
+}
+*/

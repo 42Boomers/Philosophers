@@ -6,11 +6,11 @@
 /*   By: tglory <tglory@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 10:17:13 by tglory            #+#    #+#             */
-/*   Updated: 2021/11/30 13:18:58 by tglory           ###   ########lyon.fr   */
+/*   Updated: 2021/11/30 17:11:33 by tglory           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/philosophers.h"
+#include "philosophers.h"
 
 static void	join_thread(void *v)
 {

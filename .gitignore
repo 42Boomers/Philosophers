@@ -1,5 +1,6 @@
-.vscode/c_cpp_properties.json
 *.o
 a.out
 philosophers
 .vscode
+philosophers-visualizer
+visualizer

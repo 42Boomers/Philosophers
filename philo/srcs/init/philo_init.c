@@ -6,11 +6,11 @@
 /*   By: tglory <tglory@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 10:17:22 by tglory            #+#    #+#             */
-/*   Updated: 2021/11/30 12:34:43 by tglory           ###   ########lyon.fr   */
+/*   Updated: 2021/11/30 17:22:30 by tglory           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/philosophers.h"
+#include "philosophers.h"
 
 int	add_philo(t_args *args, int id)
 {
@@ -34,6 +34,7 @@ int	init_philo(t_args *args)
 	int				i;
 
 	i = 0;
+	args->start_time = timestamp();
 	while (args->nb > i)
 	{
 		//pthread_mutex_lock(&args->mutex_start);

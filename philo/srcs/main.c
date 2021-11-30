@@ -6,11 +6,11 @@
 /*   By: tglory <tglory@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 10:17:00 by tglory            #+#    #+#             */
-/*   Updated: 2021/11/30 14:15:03 by tglory           ###   ########lyon.fr   */
+/*   Updated: 2021/11/30 17:22:11 by tglory           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philosophers.h"
+#include "philosophers.h"
 
 int	main(int ac, char **av)
 {

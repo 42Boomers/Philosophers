@@ -6,11 +6,11 @@
 /*   By: tglory <tglory@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 08:07:40 by tglory            #+#    #+#             */
-/*   Updated: 2021/11/30 10:20:24 by tglory           ###   ########lyon.fr   */
+/*   Updated: 2021/11/30 17:11:33 by tglory           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/philosophers.h"
+#include "philosophers.h"
 
 static int	ft_atoi_ultimate2(const char *str)
 {

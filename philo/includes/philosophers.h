@@ -6,7 +6,7 @@
 /*   By: tglory <tglory@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 13:02:39 by tglory            #+#    #+#             */
-/*   Updated: 2021/11/30 13:18:20 by tglory           ###   ########lyon.fr   */
+/*   Updated: 2021/11/30 17:14:08 by tglory           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_args
 	int					time_die;
 	int					time_eat;
 	int					time_sleep;
+	long				start_time;
 	int					must_eat;
 	int					*forks;
 	pthread_mutex_t		*mutexs;
@@ -58,7 +59,7 @@ typedef struct s_philo
 {
 	pthread_t		thread;
 	int				id;
-	unsigned long	last_msec;
+	long	last_msec;
 	t_action		action;
 	int				times_eat;
 	t_args			*args;
@@ -88,7 +89,7 @@ int					get_forks(t_philo *philo);
 void				*start(void *arg);
 void				join_threads(t_args *args);
 int					create_thread(t_philo *philo);
-unsigned long		timestamp(void);
+long				timestamp(void);
 void				destroy_all_mutex(t_args *args);
 void				unlock_all_mutex(t_args *args);
 void				lock_all_mutex(t_args *args);
@@ -99,7 +100,8 @@ void				set_action_s(t_philo *philo);
 void				set_action_t(t_philo *philo);
 void				set_action_e(t_philo *philo);
 void				set_action_ts_str(t_philo *philo, t_action action,
-						unsigned long ts, char *action_str);
+						long ts, char *action_str);
 int					w8_for(t_args *args);
+void				ft_sleep(int time_micro);
 
 #endif

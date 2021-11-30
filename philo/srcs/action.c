@@ -6,11 +6,11 @@
 /*   By: tglory <tglory@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 10:16:31 by tglory            #+#    #+#             */
-/*   Updated: 2021/11/30 14:17:35 by tglory           ###   ########lyon.fr   */
+/*   Updated: 2021/11/30 17:36:12 by tglory           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philosophers.h"
+#include "philosophers.h"
 
 static int	loop2(t_philo *philo)
 {
@@ -22,28 +22,25 @@ static int	loop2(t_philo *philo)
 		return (1);
 	}
 	set_action_s(philo);
-	usleep(philo->args->time_sleep * 1000);
+	ft_sleep(philo->args->time_sleep * 1000);
 	set_action_t(philo);
 	return (0);
 }
 
 static int	loop(t_philo *philo)
 {
-	unsigned long	msec;
+	long	msec;
 
-	msec = timestamp();
 	get_forks(philo);
-	if (msec - philo->last_msec > (unsigned long) philo->args->time_die)
+	msec = timestamp();
+	if (msec - philo->last_msec >= (long) philo->args->time_die)
 	{
-		printf("DIED %d %ld\n", philo->id, msec - philo->last_msec);
 		set_action_d(philo);
 		return (1);
 	}
-	else
-		printf("NOT DIED %d %ld\n", philo->id, msec - philo->last_msec);
 	set_action_e(philo);
-	philo->last_msec = timestamp();
-	usleep(philo->args->time_eat * 1000);
+	philo->last_msec = msec;
+	ft_sleep(philo->args->time_eat * 1000);
 	release_forks(philo);
 	return (loop2(philo));
 }
@@ -54,6 +51,8 @@ void	*start(void *arg)
 	int				ret;
 
 	philo = (t_philo *) arg;
+	if (philo->id % 2 == 0)
+		ft_sleep(philo->args->time_eat * 1000);
 	if (philo->args->nb == 1)
 	{
 		set_action_d(philo);

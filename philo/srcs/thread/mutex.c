@@ -6,11 +6,11 @@
 /*   By: tglory <tglory@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 10:17:05 by tglory            #+#    #+#             */
-/*   Updated: 2021/11/30 13:01:28 by tglory           ###   ########lyon.fr   */
+/*   Updated: 2021/11/30 17:11:33 by tglory           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/philosophers.h"
+#include "philosophers.h"
 
 void	iter_mutex(t_args *args, int f(pthread_mutex_t *mutex))
 {
